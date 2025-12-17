@@ -1,4 +1,4 @@
-package com.example.quench_flutter
+package com.qubators.quench
 
 import io.flutter.embedding.android.FlutterActivity
 

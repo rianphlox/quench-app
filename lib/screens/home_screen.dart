@@ -107,47 +107,49 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           CachedNetworkImage(
                             imageUrl: AppAssets.quenchLogo,
-                            width: 40,
-                            height: 40,
+                            width: 32,
+                            height: 32,
                             placeholder: (context, url) =>
                                 const CircularProgressIndicator(),
                             errorWidget: (context, url, error) => Container(
-                              width: 40,
-                              height: 40,
+                              width: 32,
+                              height: 32,
                               decoration: BoxDecoration(
                                 color: primaryColor,
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(6),
                               ),
                               child: const Icon(Icons.water_drop,
-                                  color: Colors.white),
+                                  color: Colors.white, size: 18),
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                _getGreeting(),
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                  color: isDark
-                                      ? const Color(0xFF93c5fd) // Blue-300
-                                      : const Color(0xFF64748b), // Slate-500
-                                  height: 1.2,
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  _getGreeting(),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: isDark
+                                        ? const Color(0xFF93c5fd) // Blue-300
+                                        : const Color(0xFF64748b), // Slate-500
+                                    height: 1.2,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Esteemed',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: isDark ? Colors.white : const Color(0xFF0f172a), // Slate-900
-                                  height: 1.2,
+                                Text(
+                                  'Esteemed',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: isDark ? Colors.white : const Color(0xFF0f172a), // Slate-900
+                                    height: 1.2,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
