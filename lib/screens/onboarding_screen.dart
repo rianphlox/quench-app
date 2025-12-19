@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../constants/app_constants.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -189,7 +188,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withAlpha((255 * 0.1).round()),
                               blurRadius: 20,
                               spreadRadius: -5,
                             ),
@@ -308,7 +307,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             borderRadius: BorderRadius.circular(16),
                           ),
                           elevation: 8,
-                          shadowColor: Colors.black.withOpacity(0.3),
+                          shadowColor: Colors.black.withAlpha((255 * 0.3).round()),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

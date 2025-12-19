@@ -41,7 +41,7 @@ class InsightsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: isDark
-                  ? AppColors.lightBlue.withOpacity(0.1)
+                  ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
                   : Colors.white,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
@@ -79,7 +79,7 @@ class InsightsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: isDark
-                  ? AppColors.lightBlue.withOpacity(0.1)
+                  ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
                   : Colors.white,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
@@ -102,8 +102,8 @@ class InsightsScreen extends StatelessWidget {
         fontSize: 12,
         fontWeight: FontWeight.bold,
         color: isDark
-            ? AppColors.textDark.withOpacity(0.6)
-            : AppColors.textLight.withOpacity(0.6),
+            ? AppColors.textDark.withAlpha((255 * 0.6).round())
+            : AppColors.textLight.withAlpha((255 * 0.6).round()),
         letterSpacing: 1.2,
       ),
     );
@@ -114,7 +114,7 @@ class InsightsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDark
-            ? AppColors.lightBlue.withOpacity(0.1)
+            ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
             : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
@@ -144,10 +144,10 @@ class InsightsScreen extends StatelessWidget {
                 return Container(
                   decoration: BoxDecoration(
                     color: isUnlocked
-                        ? primaryColor.withOpacity(0.1)
+                        ? primaryColor.withAlpha((255 * 0.1).round())
                         : (isDark
-                            ? AppColors.lightBlue.withOpacity(0.1)
-                            : Colors.grey.withOpacity(0.1)),
+                            ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
+                            : Colors.grey.withAlpha((255 * 0.1).round())),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: isUnlocked
@@ -164,7 +164,7 @@ class InsightsScreen extends StatelessWidget {
                         badge.icon,
                         style: TextStyle(
                           fontSize: 24,
-                          color: isUnlocked ? null : Colors.grey.withOpacity(0.3),
+                          color: isUnlocked ? null : Colors.grey.withAlpha((255 * 0.3).round()),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -176,8 +176,8 @@ class InsightsScreen extends StatelessWidget {
                           color: isUnlocked
                               ? (isDark ? AppColors.textDark : AppColors.textLight)
                               : (isDark
-                                  ? AppColors.textDark.withOpacity(0.3)
-                                  : AppColors.textLight.withOpacity(0.3)),
+                                  ? AppColors.textDark.withAlpha((255 * 0.3).round())
+                                  : AppColors.textLight.withAlpha((255 * 0.3).round())),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -192,8 +192,8 @@ class InsightsScreen extends StatelessWidget {
                 'Start logging water to unlock badges!',
                 style: TextStyle(
                   color: isDark
-                      ? AppColors.textDark.withOpacity(0.7)
-                      : AppColors.textLight.withOpacity(0.7),
+                      ? AppColors.textDark.withAlpha((255 * 0.7).round())
+                      : AppColors.textLight.withAlpha((255 * 0.7).round()),
                 ),
               ),
             ),
@@ -210,16 +210,16 @@ class InsightsScreen extends StatelessWidget {
             Icons.water_drop_outlined,
             size: 48,
             color: isDark
-                ? AppColors.textDark.withOpacity(0.3)
-                : AppColors.textLight.withOpacity(0.3),
+                ? AppColors.textDark.withAlpha((255 * 0.3).round())
+                : AppColors.textLight.withAlpha((255 * 0.3).round()),
           ),
           const SizedBox(height: 12),
           Text(
             'No water logged today yet',
             style: TextStyle(
               color: isDark
-                  ? AppColors.textDark.withOpacity(0.7)
-                  : AppColors.textLight.withOpacity(0.7),
+                  ? AppColors.textDark.withAlpha((255 * 0.7).round())
+                  : AppColors.textLight.withAlpha((255 * 0.7).round()),
             ),
           ),
         ],
@@ -237,7 +237,7 @@ class InsightsScreen extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isDark
-                ? AppColors.lightBlue.withOpacity(0.1)
+                ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
                 : Colors.white,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
@@ -250,7 +250,7 @@ class InsightsScreen extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: primaryColor.withOpacity(0.1),
+                  color: primaryColor.withAlpha((255 * 0.1).round()),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
@@ -282,8 +282,8 @@ class InsightsScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         color: isDark
-                            ? AppColors.textDark.withOpacity(0.7)
-                            : AppColors.textLight.withOpacity(0.7),
+                            ? AppColors.textDark.withAlpha((255 * 0.7).round())
+                            : AppColors.textLight.withAlpha((255 * 0.7).round()),
                       ),
                     ),
                   ],

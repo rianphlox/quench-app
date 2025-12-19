@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/app_provider.dart';
 import '../constants/app_constants.dart';
-import '../models/user_settings.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -48,8 +47,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: isDark
-                  ? AppColors.primaryBlue.withOpacity(0.9)
-                  : Colors.white.withOpacity(0.8),
+                  ? AppColors.primaryBlue.withAlpha((255 * 0.9).round())
+                  : Colors.white.withAlpha((255 * 0.8).round()),
               title: Text(
                 'Preferences',
                 style: TextStyle(
@@ -95,8 +94,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: isDark
-                              ? AppColors.textDark.withOpacity(0.7)
-                              : AppColors.textLight.withOpacity(0.7),
+                              ? AppColors.textDark.withAlpha((255 * 0.7).round())
+                              : AppColors.textLight.withAlpha((255 * 0.7).round()),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
@@ -116,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         filled: true,
                         fillColor: isDark
-                            ? AppColors.lightBlue.withOpacity(0.1)
+                            ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
                             : Colors.grey.shade50,
                         contentPadding: const EdgeInsets.all(16),
                       ),
@@ -131,8 +130,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: TextStyle(
                   fontSize: 12,
                   color: isDark
-                      ? AppColors.textDark.withOpacity(0.6)
-                      : AppColors.textLight.withOpacity(0.6),
+                      ? AppColors.textDark.withAlpha((255 * 0.6).round())
+                      : AppColors.textLight.withAlpha((255 * 0.6).round()),
                 ),
               ),
             ],
@@ -163,7 +162,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       final newSettings = provider.settings.copyWith(reminderEnabled: value);
                       provider.updateSettings(newSettings);
                     },
-                    activeColor: primaryColor,
+                    activeTrackColor: primaryColor.withAlpha((255 * 0.5).round()),
+                    activeThumbColor: primaryColor,
                   ),
                 ],
               ),
@@ -173,7 +173,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? AppColors.lightBlue.withOpacity(0.1)
+                        ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
                         : Colors.grey.shade50,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
@@ -217,8 +217,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: isDark
-                                      ? AppColors.textDark.withOpacity(0.7)
-                                      : AppColors.textLight.withOpacity(0.7),
+                                      ? AppColors.textDark.withAlpha((255 * 0.7).round())
+                                      : AppColors.textLight.withAlpha((255 * 0.7).round()),
                                 ),
                               ),
                               const SizedBox(width: 4),
@@ -226,14 +226,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 Icons.info_outline,
                                 size: 14,
                                 color: isDark
-                                    ? AppColors.textDark.withOpacity(0.5)
-                                    : AppColors.textLight.withOpacity(0.5),
+                                    ? AppColors.textDark.withAlpha((255 * 0.5).round())
+                                    : AppColors.textLight.withAlpha((255 * 0.5).round()),
                               ),
                             ],
                           ),
                           const SizedBox(height: 8),
                           DropdownButtonFormField<int>(
-                            value: provider.settings.reminderInterval,
+                            initialValue: provider.settings.reminderInterval,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -249,7 +249,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 borderSide: BorderSide(color: primaryColor, width: 2),
                               ),
                               filled: true,
-                              fillColor: isDark ? AppColors.lightBlue.withOpacity(0.1) : Colors.white,
+                              fillColor: isDark ? AppColors.lightBlue.withAlpha((255 * 0.1).round()) : Colors.white,
                             ),
                             dropdownColor: isDark ? AppColors.primaryBlue : Colors.white,
                             style: TextStyle(
@@ -300,7 +300,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDark
-            ? AppColors.lightBlue.withOpacity(0.1)
+            ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
             : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
@@ -347,8 +347,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             fontSize: 12,
             fontWeight: FontWeight.w500,
             color: isDark
-                ? AppColors.textDark.withOpacity(0.7)
-                : AppColors.textLight.withOpacity(0.7),
+                ? AppColors.textDark.withAlpha((255 * 0.7).round())
+                : AppColors.textLight.withAlpha((255 * 0.7).round()),
           ),
         ),
         const SizedBox(height: 4),
@@ -361,7 +361,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: isDark ? AppColors.borderDark : AppColors.borderLight,
               ),
               borderRadius: BorderRadius.circular(8),
-              color: isDark ? AppColors.lightBlue.withOpacity(0.1) : Colors.white,
+              color: isDark ? AppColors.lightBlue.withAlpha((255 * 0.1).round()) : Colors.white,
             ),
             child: Row(
               children: [
@@ -369,8 +369,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Icons.access_time,
                   size: 14,
                   color: isDark
-                      ? AppColors.textDark.withOpacity(0.5)
-                      : AppColors.textLight.withOpacity(0.5),
+                      ? AppColors.textDark.withAlpha((255 * 0.5).round())
+                      : AppColors.textLight.withAlpha((255 * 0.5).round()),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -423,42 +423,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return TimeOfDay(
       hour: int.parse(parts[0]),
       minute: int.parse(parts[1]),
-    );
-  }
-
-  void _showClearDataDialog(BuildContext context, AppProvider provider) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Clear All Data'),
-          content: const Text(
-            'Are you sure you want to clear all data? This action cannot be undone.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                provider.clearAllData();
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('All data cleared successfully'),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-              ),
-              child: const Text('Clear'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

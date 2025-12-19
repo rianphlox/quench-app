@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/water_log.dart';
 import '../models/user_settings.dart';
@@ -35,7 +36,7 @@ class StorageService {
       final List<dynamic> jsonList = jsonDecode(jsonString);
       return jsonList.map((json) => WaterLog.fromJson(json)).toList();
     } catch (e) {
-      print('Error loading water logs: $e');
+      debugPrint('Error loading water logs: $e');
       return [];
     }
   }
@@ -69,7 +70,7 @@ class StorageService {
       final Map<String, dynamic> json = jsonDecode(jsonString);
       return UserSettings.fromJson(json);
     } catch (e) {
-      print('Error loading user settings: $e');
+      debugPrint('Error loading user settings: $e');
       return defaultSettings;
     }
   }

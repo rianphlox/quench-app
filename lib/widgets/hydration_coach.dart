@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/water_log.dart';
-import '../constants/app_constants.dart';
 
 class HydrationCoach extends StatefulWidget {
   final double currentVolume;
@@ -110,7 +109,7 @@ class _HydrationCoachState extends State<HydrationCoach> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha((255 * 0.1).round()),
             blurRadius: 10,
             spreadRadius: 1,
           ),
@@ -119,7 +118,7 @@ class _HydrationCoachState extends State<HydrationCoach> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withAlpha((255 * 0.1).round()),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -127,7 +126,7 @@ class _HydrationCoachState extends State<HydrationCoach> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withAlpha((255 * 0.2).round()),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(

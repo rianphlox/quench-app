@@ -7,7 +7,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../services/app_provider.dart';
 import '../widgets/wave_progress.dart';
 import '../widgets/water_controls.dart';
-import '../widgets/streak_counter.dart';
 import '../constants/app_constants.dart';
 import '../services/notification_service.dart';
 import '../services/storage_service.dart';
@@ -73,7 +72,6 @@ class HomeScreen extends StatelessWidget {
     return Consumer<AppProvider>(
       builder: (context, provider, child) {
         final isDark = provider.settings.darkMode;
-        final themeColor = provider.settings.themeColor;
         final primaryColor = const Color(0xFF06b6d4); // Always use cyan blue for aqua theme
 
         return Theme(
@@ -83,8 +81,8 @@ class HomeScreen extends StatelessWidget {
                 isDark ? AppColors.darkBackground : AppColors.lightBackground,
             appBarTheme: AppBarTheme(
               backgroundColor: isDark
-                  ? AppColors.primaryBlue.withOpacity(0.9)
-                  : Colors.white.withOpacity(0.8),
+                  ? AppColors.primaryBlue.withAlpha((255 * 0.9).round())
+                  : Colors.white.withAlpha((255 * 0.8).round()),
               foregroundColor:
                   isDark ? AppColors.textDark : AppColors.textLight,
               elevation: 0,
@@ -101,8 +99,8 @@ class HomeScreen extends StatelessWidget {
                       floating: true,
                       snap: true,
                       backgroundColor: isDark
-                          ? AppColors.primaryBlue.withOpacity(0.9)
-                          : Colors.white.withOpacity(0.8),
+                          ? AppColors.primaryBlue.withAlpha((255 * 0.9).round())
+                          : Colors.white.withAlpha((255 * 0.8).round()),
                       title: Row(
                         children: [
                           CachedNetworkImage(
@@ -154,8 +152,6 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                       actions: [
-                        StreakCounter(streak: provider.currentStreak),
-                        const SizedBox(width: 8),
                         IconButton(
                           onPressed: () {
                             _handleNotificationToggle(context, provider);
@@ -166,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                                 : Icons.notifications_off,
                             color: provider.settings.reminderEnabled
                                 ? primaryColor
-                                : (isDark ? AppColors.textDark.withOpacity(0.5) : AppColors.textLight.withOpacity(0.5)),
+                                : (isDark ? AppColors.textDark.withAlpha((255 * 0.5).round()) : AppColors.textLight.withAlpha((255 * 0.5).round())),
                           ),
                           tooltip: provider.settings.reminderEnabled
                               ? 'Reminders On'
@@ -284,7 +280,7 @@ class HomeScreen extends StatelessWidget {
                                               decoration: BoxDecoration(
                                                 color: isDark
                                                     ? AppColors.lightBlue
-                                                        .withOpacity(0.3)
+                                                        .withAlpha((255 * 0.3).round())
                                                     : AppColors.borderLight,
                                                 borderRadius:
                                                     BorderRadius.circular(20),
@@ -296,9 +292,9 @@ class HomeScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w600,
                                                   color: isDark
                                                       ? AppColors.textDark
-                                                          .withOpacity(0.8)
+                                                          .withAlpha((255 * 0.8).round())
                                                       : AppColors.textLight
-                                                          .withOpacity(0.8),
+                                                          .withAlpha((255 * 0.8).round()),
                                                 ),
                                               ),
                                             ),
@@ -378,9 +374,9 @@ class HomeScreen extends StatelessWidget {
                                           fontSize: 10,
                                           color: isDark
                                               ? AppColors.textDark
-                                                  .withOpacity(0.5)
+                                                  .withAlpha((255 * 0.5).round())
                                               : AppColors.textLight
-                                                  .withOpacity(0.5),
+                                                  .withAlpha((255 * 0.5).round()),
                                         ),
                                       ),
                                       const SizedBox(height: 40),
@@ -395,23 +391,124 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                // Confetti overlay
+                // Goal Achievement Confetti (from top center)
                 Align(
                   alignment: Alignment.topCenter,
                   child: ConfettiWidget(
-                    confettiController: provider.confettiController,
-                    blastDirection: 1.57, // radians - 90 degrees
+                    confettiController: provider.goalConfettiController,
+                    blastDirection: 1.57, // radians - 90 degrees (downward)
+                    blastDirectionality: BlastDirectionality.explosive,
+                    particleDrag: 0.05,
+                    colors: const [
+                      Color(0xFF06b6d4), // Primary cyan
+                      Color(0xFF0891b2), // Cyan-600
+                      Color(0xFF0e7490), // Cyan-700
+                      Color(0xFF22d3ee), // Cyan-400
+                      Color(0xFF67e8f9), // Cyan-300
+                      Colors.white,
+                    ],
                     createParticlePath: (size) {
-                      return Path()
-                        ..addOval(Rect.fromCircle(
-                            center: Offset(size.width / 2, size.height / 2),
-                            radius: 3));
+                      final path = Path();
+                      // Create water drop shaped particles
+                      path.addOval(Rect.fromCircle(
+                        center: Offset(size.width / 2, size.height / 2),
+                        radius: 4,
+                      ));
+                      // Add some star shapes
+                      if (size.width > 6) {
+                        path.addPolygon([
+                          Offset(size.width / 2, 0),
+                          Offset(size.width * 0.6, size.height * 0.35),
+                          Offset(size.width, size.height * 0.35),
+                          Offset(size.width * 0.7, size.height * 0.6),
+                          Offset(size.width * 0.8, size.height),
+                          Offset(size.width / 2, size.height * 0.75),
+                          Offset(size.width * 0.2, size.height),
+                          Offset(size.width * 0.3, size.height * 0.6),
+                          Offset(0, size.height * 0.35),
+                          Offset(size.width * 0.4, size.height * 0.35),
+                        ], true);
+                      }
+                      return path;
                     },
-                    emissionFrequency: 0.05,
-                    numberOfParticles: 50,
-                    maxBlastForce: 20,
-                    minBlastForce: 10,
-                    gravity: 0.1,
+                    emissionFrequency: 0.02,
+                    numberOfParticles: 80,
+                    maxBlastForce: 35,
+                    minBlastForce: 15,
+                    gravity: 0.08,
+                  ),
+                ),
+                // Badge Achievement Confetti (from sides)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: ConfettiWidget(
+                    confettiController: provider.badgeConfettiController,
+                    blastDirection: 0, // radians - rightward
+                    blastDirectionality: BlastDirectionality.explosive,
+                    particleDrag: 0.02,
+                    colors: const [
+                      Color(0xFFffd700), // Gold
+                      Colors.orange,
+                      Colors.amber,
+                      Colors.yellow,
+                      Color(0xFFfbbf24), // Amber-400
+                      Color(0xFFf59e0b), // Amber-500
+                    ],
+                    createParticlePath: (size) {
+                      final path = Path();
+                      // Create trophy/badge shaped particles
+                      path.addRRect(RRect.fromRectAndRadius(
+                        Rect.fromLTWH(0, 0, size.width, size.height),
+                        Radius.circular(size.width * 0.3),
+                      ));
+                      // Add diamond shape
+                      if (size.width > 4) {
+                        path.addPolygon([
+                          Offset(size.width / 2, 0),
+                          Offset(size.width, size.height / 2),
+                          Offset(size.width / 2, size.height),
+                          Offset(0, size.height / 2),
+                        ], true);
+                      }
+                      return path;
+                    },
+                    emissionFrequency: 0.01,
+                    numberOfParticles: 60,
+                    maxBlastForce: 30,
+                    minBlastForce: 12,
+                    gravity: 0.06,
+                  ),
+                ),
+                // Badge Achievement Confetti (from right side)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ConfettiWidget(
+                    confettiController: provider.badgeConfettiController,
+                    blastDirection: 3.14, // radians - leftward
+                    blastDirectionality: BlastDirectionality.explosive,
+                    particleDrag: 0.02,
+                    colors: const [
+                      Color(0xFFffd700), // Gold
+                      Colors.orange,
+                      Colors.amber,
+                      Colors.yellow,
+                      Color(0xFFfbbf24), // Amber-400
+                      Color(0xFFf59e0b), // Amber-500
+                    ],
+                    createParticlePath: (size) {
+                      final path = Path();
+                      // Create trophy/badge shaped particles
+                      path.addRRect(RRect.fromRectAndRadius(
+                        Rect.fromLTWH(0, 0, size.width, size.height),
+                        Radius.circular(size.width * 0.3),
+                      ));
+                      return path;
+                    },
+                    emissionFrequency: 0.01,
+                    numberOfParticles: 60,
+                    maxBlastForce: 30,
+                    minBlastForce: 12,
+                    gravity: 0.06,
                   ),
                 ),
               ],

@@ -64,7 +64,7 @@ class _CalendarViewState extends State<CalendarView> {
     } else if (volume > 0) {
       return Colors.orange;
     }
-    return isDark ? AppColors.lightBlue.withOpacity(0.2) : Colors.grey.shade200;
+    return isDark ? AppColors.lightBlue.withAlpha((255 * 0.2).round()) : Colors.grey.shade200;
   }
 
   bool isCurrentMonth(DateTime day) {
@@ -90,7 +90,7 @@ class _CalendarViewState extends State<CalendarView> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDark
-            ? AppColors.lightBlue.withOpacity(0.1)
+            ? AppColors.lightBlue.withAlpha((255 * 0.1).round())
             : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
@@ -150,8 +150,8 @@ class _CalendarViewState extends State<CalendarView> {
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             color: isDark
-                                ? AppColors.textDark.withOpacity(0.6)
-                                : AppColors.textLight.withOpacity(0.6),
+                                ? AppColors.textDark.withAlpha((255 * 0.6).round())
+                                : AppColors.textLight.withAlpha((255 * 0.6).round()),
                           ),
                         ),
                       ),
@@ -186,7 +186,7 @@ class _CalendarViewState extends State<CalendarView> {
                         margin: const EdgeInsets.all(2),
                         height: 32,
                         decoration: BoxDecoration(
-                          color: isCurrentMonthDay ? dayColor : dayColor.withOpacity(0.2),
+                          color: isCurrentMonthDay ? dayColor : dayColor.withAlpha((255 * 0.2).round()),
                           borderRadius: BorderRadius.circular(8),
                           border: isTodayDay
                               ? Border.all(color: primaryColor, width: 2)
@@ -201,10 +201,10 @@ class _CalendarViewState extends State<CalendarView> {
                               color: volume > 0
                                   ? Colors.white
                                   : (isDark
-                                      ? AppColors.textDark.withOpacity(
-                                          isCurrentMonthDay ? 0.8 : 0.3)
-                                      : AppColors.textLight.withOpacity(
-                                          isCurrentMonthDay ? 0.8 : 0.3)),
+                                      ? AppColors.textDark.withAlpha(
+                                          (255 * (isCurrentMonthDay ? 0.8 : 0.3)).round())
+                                      : AppColors.textLight.withAlpha(
+                                          (255 * (isCurrentMonthDay ? 0.8 : 0.3)).round())),
                             ),
                           ),
                         ),
@@ -250,8 +250,8 @@ class _CalendarViewState extends State<CalendarView> {
           style: TextStyle(
             fontSize: 10,
             color: isDark
-                ? AppColors.textDark.withOpacity(0.7)
-                : AppColors.textLight.withOpacity(0.7),
+                ? AppColors.textDark.withAlpha((255 * 0.7).round())
+                : AppColors.textLight.withAlpha((255 * 0.7).round()),
           ),
         ),
       ],

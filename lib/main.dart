@@ -64,7 +64,7 @@ class QuenchApp extends StatelessWidget {
               primaryColor: primaryColor,
               scaffoldBackgroundColor: AppColors.lightBackground,
               appBarTheme: AppBarTheme(
-                backgroundColor: AppColors.white.withValues(alpha: 0.8),
+                backgroundColor: AppColors.white.withAlpha((255 * 0.8).round()),
                 foregroundColor: AppColors.lightPrimaryText,
                 elevation: 0,
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -111,7 +111,7 @@ class QuenchApp extends StatelessWidget {
               primaryColor: primaryColor,
               scaffoldBackgroundColor: AppColors.darkBackground,
               appBarTheme: AppBarTheme(
-                backgroundColor: AppColors.darkBackground.withValues(alpha: 0.9),
+                backgroundColor: AppColors.darkBackground.withAlpha((255 * 0.9).round()),
                 foregroundColor: AppColors.textDark,
                 elevation: 0,
                 systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -167,7 +167,9 @@ class QuenchApp extends StatelessWidget {
   MaterialColor _createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};
-    final int r = color.red, g = color.green, b = color.blue;
+    final int r = (color.value >> 16) & 0xFF;
+    final int g = (color.value >> 8) & 0xFF;
+    final int b = color.value & 0xFF;
 
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);

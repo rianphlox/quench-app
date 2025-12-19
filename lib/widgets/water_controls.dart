@@ -127,7 +127,7 @@ class _WaterControlsState extends State<WaterControls>
                       ),
                     ),
                   );
-                }).toList(),
+                }),
                 // Custom button as 6th item
                 AnimationConfiguration.staggeredGrid(
                   position: 5,
@@ -200,13 +200,13 @@ class _WaterControlsState extends State<WaterControls>
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF06b6d4), // cyan-500
                       foregroundColor: Colors.white,
-                      disabledBackgroundColor: const Color(0xFF06b6d4).withValues(alpha: 0.5),
+                      disabledBackgroundColor: const Color(0xFF06b6d4).withAlpha((255 * 0.5).round()),
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       elevation: 8,
-                      shadowColor: const Color(0xFF06b6d4).withValues(alpha: 0.2),
+                      shadowColor: const Color(0xFF06b6d4).withAlpha((255 * 0.2).round()),
                     ),
                     child: const Text(
                       'Add',
@@ -258,7 +258,7 @@ class _WaterControlButton extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: isDark ? 0.1 : 0.04),
+                color: Colors.black.withAlpha((255 * (isDark ? 0.1 : 0.04)).round()),
                 blurRadius: 4,
                 spreadRadius: 1,
               ),
@@ -329,7 +329,7 @@ class _CustomButton extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: isDark ? 0.1 : 0.04),
+                color: Colors.black.withAlpha((255 * (isDark ? 0.1 : 0.04)).round()),
                 blurRadius: 4,
                 spreadRadius: 1,
               ),

@@ -12,12 +12,14 @@ import '../services/notification_service.dart';
 class AppProvider with ChangeNotifier {
   List<WaterLog> _logs = [];
   UserSettings _settings = defaultSettings;
-  late ConfettiController _confettiController;
+  late ConfettiController _goalConfettiController;
+  late ConfettiController _badgeConfettiController;
 
   // Getters
   List<WaterLog> get logs => _logs;
   UserSettings get settings => _settings;
-  ConfettiController get confettiController => _confettiController;
+  ConfettiController get goalConfettiController => _goalConfettiController;
+  ConfettiController get badgeConfettiController => _badgeConfettiController;
 
   // Computed properties
   List<WaterLog> get todayLogs {
@@ -125,7 +127,8 @@ class AppProvider with ChangeNotifier {
   }
 
   AppProvider() {
-    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+    _goalConfettiController = ConfettiController(duration: const Duration(seconds: 4));
+    _badgeConfettiController = ConfettiController(duration: const Duration(seconds: 6));
     _loadData();
     _initializeNotifications();
   }
@@ -179,15 +182,23 @@ class AppProvider with ChangeNotifier {
       // Check if goal just reached
       if (!wasGoalReached && goalReachedToday) {
         await AudioService.playSuccessSound();
-        _confettiController.play();
+        _goalConfettiController.play();
+        // Add a second burst for extra celebration
+        Future.delayed(const Duration(milliseconds: 800), () {
+          _goalConfettiController.play();
+        });
       }
 
       // Animate new badge unlocks
       if (unlockedNewBadges.isNotEmpty) {
         debugPrint('🏆 New badges unlocked: ${unlockedNewBadges.join(', ')}');
-        // Additional celebration for new badges
-        Future.delayed(const Duration(milliseconds: 500), () {
-          _confettiController.play();
+        // Staggered celebration for new badges
+        _badgeConfettiController.play();
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          _badgeConfettiController.play();
+        });
+        Future.delayed(const Duration(milliseconds: 2000), () {
+          _badgeConfettiController.play();
         });
       }
 
@@ -256,7 +267,8 @@ class AppProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    _confettiController.dispose();
+    _goalConfettiController.dispose();
+    _badgeConfettiController.dispose();
     super.dispose();
   }
 }

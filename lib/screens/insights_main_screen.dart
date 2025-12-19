@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/app_provider.dart';
 import '../constants/app_constants.dart';
+import '../widgets/streak_counter.dart';
 import 'insights_screen.dart';
 
 class InsightsMainScreen extends StatelessWidget {
@@ -23,8 +24,8 @@ class InsightsMainScreen extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: isDark
-                  ? AppColors.primaryBlue.withOpacity(0.9)
-                  : Colors.white.withOpacity(0.8),
+                  ? AppColors.primaryBlue.withAlpha((255 * 0.9).round())
+                  : Colors.white.withAlpha((255 * 0.8).round()),
               title: Text(
                 'Insights',
                 style: TextStyle(
@@ -32,6 +33,10 @@ class InsightsMainScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              actions: [
+                StreakCounter(streak: provider.currentStreak),
+                const SizedBox(width: 16),
+              ],
             ),
             body: InsightsScreen(provider: provider),
           ),

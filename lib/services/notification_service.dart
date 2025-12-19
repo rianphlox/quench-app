@@ -41,16 +41,16 @@ class NotificationService {
       if (initialized == true) {
         _initialized = true;
         if (kDebugMode) {
-          print('✅ Notification service initialized successfully');
+          debugPrint('✅ Notification service initialized successfully');
         }
       } else {
         if (kDebugMode) {
-          print('⚠️ Notification service initialization returned false');
+          debugPrint('⚠️ Notification service initialization returned false');
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        print('❌ Failed to initialize notification service: $e');
+        debugPrint('❌ Failed to initialize notification service: $e');
       }
       // Don't throw - let app continue without notifications
     }
@@ -58,7 +58,7 @@ class NotificationService {
 
   static void _onNotificationTapped(NotificationResponse notificationResponse) {
     if (kDebugMode) {
-      print('Notification tapped: ${notificationResponse.payload}');
+      debugPrint('Notification tapped: ${notificationResponse.payload}');
     }
   }
 
@@ -69,7 +69,7 @@ class NotificationService {
 
     if (!_initialized) {
       if (kDebugMode) {
-        print('⚠️ Cannot request permissions - notification service not initialized');
+        debugPrint('⚠️ Cannot request permissions - notification service not initialized');
       }
       return false;
     }
@@ -97,7 +97,7 @@ class NotificationService {
       }
     } catch (e) {
       if (kDebugMode) {
-        print('❌ Failed to request permissions: $e');
+        debugPrint('❌ Failed to request permissions: $e');
       }
       return false;
     }
@@ -116,7 +116,7 @@ class NotificationService {
 
     if (!_initialized) {
       if (kDebugMode) {
-        print('⚠️ Cannot show notification - service not initialized');
+        debugPrint('⚠️ Cannot show notification - service not initialized');
       }
       return;
     }
@@ -155,7 +155,7 @@ class NotificationService {
       );
     } catch (e) {
       if (kDebugMode) {
-        print('❌ Failed to show notification: $e');
+        debugPrint('❌ Failed to show notification: $e');
       }
     }
   }
@@ -215,141 +215,134 @@ class NotificationService {
     required bool enabled,
     required int intervalMinutes,
     required String startTime, // "09:00"
-    required String endTime,   // "22:00"
+    required String endTime, // "22:00"
   }) async {
-    if (!enabled) {
-      await cancelAllNotifications();
-      return;
-    }
-
     if (!_initialized) {
       await initialize();
     }
-
     if (!_initialized) {
       if (kDebugMode) {
-        print('⚠️ Cannot schedule reminders - service not initialized');
+        debugPrint('⚠️ Cannot schedule reminders - service not initialized');
+      }
+      return;
+    }
+
+    // Always cancel previous reminders to avoid duplicates
+    await cancelAllNotifications();
+
+    if (!enabled) {
+      if (kDebugMode) {
+        debugPrint('🔕 Water reminders have been disabled and all notifications canceled.');
       }
       return;
     }
 
     try {
-      // Cancel existing reminders
-      await cancelAllNotifications();
+      const List<String> messages = [
+        "Time to hydrate! 💧",
+        "Don't forget to drink water! 🌊",
+        "Stay hydrated, stay healthy! 💙",
+        "Your body needs water! 💧",
+        "Hydration reminder! 🌟",
+        "Time for a water break! 💧",
+      ];
 
-    // Parse start and end times
-    final startHour = int.parse(startTime.split(':')[0]);
-    final startMinute = int.parse(startTime.split(':')[1]);
-    final endHour = int.parse(endTime.split(':')[0]);
-    final endMinute = int.parse(endTime.split(':')[1]);
+      const List<String> bodies = [
+        "Keep your hydration on track with Quench",
+        "Your daily water goal is waiting for you",
+        "Stay refreshed and energized",
+        "Your health depends on proper hydration",
+        "Take a moment to drink some water",
+        "Every sip counts towards your goal",
+      ];
 
-    final now = tz.TZDateTime.now(tz.local);
-
-    // Calculate next reminder time
-    var nextReminder = tz.TZDateTime(
-      tz.local,
-      now.year,
-      now.month,
-      now.day,
-      startHour,
-      startMinute,
-    );
-
-    // If start time has passed today, start tomorrow
-    if (nextReminder.isBefore(now)) {
-      nextReminder = nextReminder.add(const Duration(days: 1));
-    }
-
-    final endDateTime = tz.TZDateTime(
-      tz.local,
-      nextReminder.year,
-      nextReminder.month,
-      nextReminder.day,
-      endHour,
-      endMinute,
-    );
-
-    int notificationId = 1000;
-
-    // Schedule notifications within the time window
-    while (nextReminder.isBefore(endDateTime)) {
-      await _scheduleWaterReminder(
-        id: notificationId++,
-        scheduledDate: nextReminder,
+      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+        'quench_reminders',
+        'Water Reminders',
+        channelDescription: 'Notifications to remind you to drink water',
+        importance: Importance.high,
+        priority: Priority.high,
+        icon: '@mipmap/launcher_icon',
+        color: Color(0xFF06b6d4),
+        playSound: true,
+        enableVibration: true,
+        autoCancel: true,
       );
 
-      nextReminder = nextReminder.add(Duration(minutes: intervalMinutes));
-    }
+      const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+
+      const NotificationDetails platformChannelSpecifics = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+        macOS: iosDetails,
+      );
+
+      final startHour = int.parse(startTime.split(':')[0]);
+      final startMinute = int.parse(startTime.split(':')[1]);
+      final endHour = int.parse(endTime.split(':')[0]);
+      final endMinute = int.parse(endTime.split(':')[1]);
+
+      var currentTime = TimeOfDay(hour: startHour, minute: startMinute);
+      final endTimeOfDay = TimeOfDay(hour: endHour, minute: endMinute);
+
+      int notificationId = 1000;
+
+      while (
+          currentTime.hour < endTimeOfDay.hour ||
+          (currentTime.hour == endTimeOfDay.hour &&
+              currentTime.minute <= endTimeOfDay.minute)) {
+
+        final now = tz.TZDateTime.now(tz.local);
+        var scheduledDate = tz.TZDateTime(
+          tz.local,
+          now.year,
+          now.month,
+          now.day,
+          currentTime.hour,
+          currentTime.minute,
+        );
+
+        // If the scheduled time has already passed today, schedule it for tomorrow
+        if (scheduledDate.isBefore(now)) {
+          scheduledDate = scheduledDate.add(const Duration(days: 1));
+        }
+
+        final title = messages[notificationId % messages.length];
+        final body = bodies[notificationId % bodies.length];
+
+        await _notifications.zonedSchedule(
+          notificationId,
+          title,
+          body,
+          scheduledDate,
+          platformChannelSpecifics,
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time, // This makes it repeat daily
+          payload: 'water_reminder_$notificationId',
+        );
+
+        if (kDebugMode) {
+          debugPrint('✅ Scheduled daily reminder #$notificationId at ${currentTime.hour}:${currentTime.minute}');
+        }
+
+        // Increment time for the next notification
+        final newMinute = currentTime.minute + intervalMinutes;
+        currentTime = TimeOfDay(
+          hour: currentTime.hour + (newMinute ~/ 60),
+          minute: newMinute % 60,
+        );
+        notificationId++;
+      }
     } catch (e) {
       if (kDebugMode) {
-        print('❌ Failed to schedule water reminders: $e');
+        debugPrint('❌ Failed to schedule water reminders: $e');
       }
     }
-  }
-
-  static Future<void> _scheduleWaterReminder({
-    required int id,
-    required tz.TZDateTime scheduledDate,
-  }) async {
-    const List<String> messages = [
-      "Time to hydrate! 💧",
-      "Don't forget to drink water! 🌊",
-      "Stay hydrated, stay healthy! 💙",
-      "Your body needs water! 💧",
-      "Hydration reminder! 🌟",
-      "Time for a water break! 💧",
-    ];
-
-    const List<String> bodies = [
-      "Keep your hydration on track with Quench",
-      "Your daily water goal is waiting for you",
-      "Stay refreshed and energized",
-      "Your health depends on proper hydration",
-      "Take a moment to drink some water",
-      "Every sip counts towards your goal",
-    ];
-
-    final title = messages[id % messages.length];
-    final body = bodies[id % bodies.length];
-
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'quench_reminders',
-      'Water Reminders',
-      channelDescription: 'Notifications to remind you to drink water',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/launcher_icon',
-      color: Color(0xFF06b6d4), // Cyan-500
-      playSound: true,
-      enableVibration: true,
-      autoCancel: true,
-    );
-
-    const DarwinNotificationDetails iosPlatformChannelSpecifics =
-        DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iosPlatformChannelSpecifics,
-      macOS: iosPlatformChannelSpecifics,
-    );
-
-    await _notifications.zonedSchedule(
-      id,
-      title,
-      body,
-      scheduledDate,
-      platformChannelSpecifics,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      payload: 'water_reminder',
-    );
   }
 
   static Future<void> cancelAllNotifications() async {
@@ -359,7 +352,7 @@ class NotificationService {
       await _notifications.cancelAll();
     } catch (e) {
       if (kDebugMode) {
-        print('❌ Failed to cancel notifications: $e');
+        debugPrint('❌ Failed to cancel notifications: $e');
       }
     }
   }
@@ -371,7 +364,7 @@ class NotificationService {
       await _notifications.cancel(id);
     } catch (e) {
       if (kDebugMode) {
-        print('❌ Failed to cancel notification $id: $e');
+        debugPrint('❌ Failed to cancel notification $id: $e');
       }
     }
   }
@@ -383,7 +376,7 @@ class NotificationService {
       return await _notifications.pendingNotificationRequests();
     } catch (e) {
       if (kDebugMode) {
-        print('❌ Failed to get pending notifications: $e');
+        debugPrint('❌ Failed to get pending notifications: $e');
       }
       return [];
     }

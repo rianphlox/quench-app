@@ -93,7 +93,7 @@ class _TooltipWidgetState extends State<TooltipWidget>
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withAlpha((255 * 0.2).round()),
                               blurRadius: 8,
                               spreadRadius: 1,
                             ),

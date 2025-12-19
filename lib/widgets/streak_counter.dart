@@ -20,11 +20,11 @@ class StreakCounter extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: isDark
-            ? AppColors.lightBlue.withOpacity(0.3)
-            : const Color(0xFF06b6d4).withOpacity(0.1),
+            ? AppColors.lightBlue.withAlpha((255 * 0.3).round())
+            : const Color(0xFF06b6d4).withAlpha((255 * 0.1).round()),
         borderRadius: BorderRadius.circular(20.0),
         border: Border.all(
-          color: const Color(0xFF06b6d4).withOpacity(0.3),
+          color: const Color(0xFF06b6d4).withAlpha((255 * 0.3).round()),
           width: 1.0,
         ),
       ),

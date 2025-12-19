@@ -76,18 +76,9 @@ class _WaveProgressState extends State<WaveProgress>
     super.dispose();
   }
 
-  Color _getThemeColor() {
-    final themeColorObj = themeColors.firstWhere(
-      (color) => color.value == widget.themeColor,
-      orElse: () => themeColors.first,
-    );
-    return themeColorObj.color;
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final themeColor = _getThemeColor();
 
     return AnimatedBuilder(
       animation: _progressAnimation,
@@ -105,7 +96,7 @@ class _WaveProgressState extends State<WaveProgress>
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF06b6d4).withOpacity(0.3), // Exact React cyan shadow
+            color: const Color(0xFF06b6d4).withAlpha((255 * 0.3).round()), // Exact React cyan shadow
             blurRadius: 20.0,
             spreadRadius: 2.0,
           ),
@@ -117,8 +108,8 @@ class _WaveProgressState extends State<WaveProgress>
             // Background
             Container(
               color: isDark
-                ? AppColors.darkBackground.withOpacity(0.5)
-                : Colors.white.withOpacity(0.8),
+                ? AppColors.darkBackground.withAlpha((255 * 0.5).round())
+                : Colors.white.withAlpha((255 * 0.8).round()),
             ),
             // Wave animation
             if (clampedPercentage > 0)
@@ -134,11 +125,11 @@ class _WaveProgressState extends State<WaveProgress>
                   config: CustomConfig(
                     gradients: [
                       [
-                        const Color(0xFF06b6d4).withOpacity(0.6), // Exact React cyan
-                        const Color(0xFF06b6d4).withOpacity(0.8),
+                        const Color(0xFF06b6d4).withAlpha((255 * 0.6).round()), // Exact React cyan
+                        const Color(0xFF06b6d4).withAlpha((255 * 0.8).round()),
                       ],
                       [
-                        const Color(0xFF0891b2).withOpacity(0.8), // Cyan-600 for depth
+                        const Color(0xFF0891b2).withAlpha((255 * 0.8).round()), // Cyan-600 for depth
                         const Color(0xFF0891b2),
                       ],
                     ],
@@ -169,7 +160,7 @@ class _WaveProgressState extends State<WaveProgress>
                       shadows: clampedPercentage > 50
                         ? [
                             Shadow(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withAlpha((255 * 0.3).round()),
                               blurRadius: 2.0,
                             ),
                           ]
